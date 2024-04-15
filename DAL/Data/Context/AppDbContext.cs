@@ -11,10 +11,10 @@ namespace DAL.Data.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Group> Role { get; set; }
+        public DbSet<Group> Group { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Permission> Permission { get; set; }
-        public DbSet<UserGroup> UserRole { get; set; }
+        public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<GroupPermission> GroupPermissions { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
