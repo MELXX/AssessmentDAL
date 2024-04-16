@@ -37,7 +37,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Group");
+                    b.ToTable("Group", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Data.Models.GroupPermission", b =>
@@ -58,7 +58,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("GroupPermissions");
+                    b.ToTable("GroupPermissions", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Data.Models.Permission", b =>
@@ -76,7 +76,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permission");
+                    b.ToTable("Permission", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Data.Models.User", b =>
@@ -102,7 +102,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Data.Models.UserGroup", b =>
@@ -123,7 +123,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserGroup");
+                    b.ToTable("UserGroup", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Data.Models.GroupPermission", b =>
