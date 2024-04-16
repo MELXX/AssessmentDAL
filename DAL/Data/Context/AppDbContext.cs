@@ -21,5 +21,10 @@ namespace DAL.Data.Context
         {
                 
         }
+
+        public AppDbContext()
+        {
+                
+        }
     }
 }
