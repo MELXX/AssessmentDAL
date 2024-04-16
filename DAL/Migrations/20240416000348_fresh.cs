@@ -5,24 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class initial : Migration
+    public partial class fresh : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Permission",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permission", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Group",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -31,7 +19,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Group", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permission",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,7 +43,6 @@ namespace DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -62,21 +62,21 @@ namespace DAL.Migrations
                 {
                     table.PrimaryKey("PK_GroupPermissions", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_GroupPermissions_Group_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Group",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_GroupPermissions_Permission_PermissionId",
                         column: x => x.PermissionId,
                         principalTable: "Permission",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupPermissions_Role_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Role",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRole",
+                name: "UserGroup",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -85,15 +85,15 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
+                    table.PrimaryKey("PK_UserGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRole_Role_GroupId",
+                        name: "FK_UserGroup_Group_GroupId",
                         column: x => x.GroupId,
-                        principalTable: "Role",
+                        principalTable: "Group",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRole_User_UserId",
+                        name: "FK_UserGroup_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -111,13 +111,13 @@ namespace DAL.Migrations
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_GroupId",
-                table: "UserRole",
+                name: "IX_UserGroup_GroupId",
+                table: "UserGroup",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId",
-                table: "UserRole",
+                name: "IX_UserGroup_UserId",
+                table: "UserGroup",
                 column: "UserId");
         }
 
@@ -127,13 +127,13 @@ namespace DAL.Migrations
                 name: "GroupPermissions");
 
             migrationBuilder.DropTable(
-                name: "UserRole");
+                name: "UserGroup");
 
             migrationBuilder.DropTable(
                 name: "Permission");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Group");
 
             migrationBuilder.DropTable(
                 name: "User");

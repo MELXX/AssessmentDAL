@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240414214549_edits")]
-    partial class edits
+    [Migration("20240416000348_fresh")]
+    partial class fresh
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,7 +39,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Group");
                 });
 
             modelBuilder.Entity("DAL.Data.Models.GroupPermission", b =>
@@ -71,6 +71,10 @@ namespace DAL.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -121,19 +125,19 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserGroup");
                 });
 
             modelBuilder.Entity("DAL.Data.Models.GroupPermission", b =>
                 {
                     b.HasOne("DAL.Data.Models.Group", "Group")
-                        .WithMany()
+                        .WithMany("Permissions")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DAL.Data.Models.Permission", "Permission")
-                        .WithMany()
+                        .WithMany("Groups")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -164,7 +168,14 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Data.Models.Group", b =>
                 {
+                    b.Navigation("Permissions");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DAL.Data.Models.Permission", b =>
+                {
+                    b.Navigation("Groups");
                 });
 
             modelBuilder.Entity("DAL.Data.Models.User", b =>
